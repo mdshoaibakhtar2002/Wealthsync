@@ -104,14 +104,13 @@ export const headerRow: Row = {
   ],
   height: 40,
 };
-
-function calculateTotalAmount(outflows, inflows) {
+function calculateTotalAmount(outflows: Outflows[], inflows: Inflows[]): number {
   let totalOutflow = 0;
   let totalInflow = 0;
 
   for (let i = 0; i < outflows.length; i++) {
-    const outflowEntries = Object.entries(outflows[i]);
-    const inflowEntries = Object.entries(inflows[i]);
+    const outflowEntries: [string, CashFlowValue[]][] = Object.entries(outflows[i]);
+    const inflowEntries: [string, CashFlowValue[]][] = Object.entries(inflows[i]);
 
     for (let j = 0; j < outflowEntries.length; j++) {
       for (let k = 0; k < outflowEntries[j][1].length; k++) {
@@ -128,7 +127,6 @@ function calculateTotalAmount(outflows, inflows) {
 
   return totalInflow - totalOutflow;
 }
-
 export const getRows = (
   liquidFunds: LiquidFunds[],
   inflows: Inflows[],

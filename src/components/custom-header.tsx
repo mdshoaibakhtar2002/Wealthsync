@@ -1,10 +1,9 @@
 import { styled } from "@mui/material";
 
-import { Color, BackgroundColor } from "../types/types-interfaces";
 
 interface CustomHeaderProps {
-  BackgroundColor: BackgroundColor;
-  Color: Color;
+  BackgroundColor: string;
+  Color: string;
   Width?: number;
 }
 const CustomHeader = styled("div")<CustomHeaderProps>(

@@ -4,10 +4,15 @@ import { useContext } from 'react';
 import { AppContext } from '../AppContext';
 
 const Dashboard = () => {
-    const { graphData, open} = useContext(AppContext);
+    const context = useContext(AppContext);
+    if (!context) {
+        throw new Error('AppContext must be used within an AppProvider');
+    }
+    const { graphData, open } = context;
+
     return (
-        <Stack sx={open ? {width:'85%', marginLeft:'14rem'}:{width:'100%'}}>
-             <Graph open={true} cashInArray={graphData['cashInArray']} cashOutArray={graphData['cashOutArray']} liquidFunds={graphData['cashBox']}/>
+        <Stack sx={open ? { width: '85%', marginLeft: '14rem' } : { width: '100%' }}>
+            <Graph cashInArray={graphData['cashInArray']} cashOutArray={graphData['cashOutArray']} liquidFunds={graphData['cashBox']} />
         </Stack>
     )
 }

@@ -1,4 +1,4 @@
-import { useState, useMemo, useContext } from "react";
+import { useState, useMemo, useContext, ChangeEvent } from "react";
 import { ReactGrid, TextCell } from "@silevis/reactgrid";
 import { getLiquidFunds, getInflows, getOutflows } from "../constants";
 import {
@@ -13,20 +13,26 @@ import { Button, Stack, TextField, Typography } from "@mui/material";
 import "@silevis/reactgrid/styles.css";
 import { AppContext } from '../AppContext';
 
+const Planner = () => {
+    const context = useContext(AppContext);
+    if (!context) {
+        throw new Error('AppContext must be used within an AppProvider');
+    }
+    const { open } = context;
 
-const Planner = ({ }) => {
-    const { open } = useContext(AppContext);
-    const [liquidFunds, setLiquidFunds] = useState<LiquidFunds[]>(
+    const [liquidFunds] = useState<LiquidFunds[]>(
         getLiquidFunds()
     );
     const columns = useMemo(getColumns, []);
     const [cashInArray, setCashInArray] = useState<number[]>([]);
     const [cashOutArray, setCashOutArray] = useState<number[]>([]);
-    const [inflows, setInflows] = useState<Inflows[]>(getInflows());
-    const [outflows, setOutflows] = useState<Outflows[]>(getOutflows());
+    const [inflows] = useState<Inflows[]>(getInflows());
+    const [outflows] = useState<Outflows[]>(getOutflows());
     const [cashbox, setCashbox] = useState<number[]>([]);
-    const [backgroundColor, setBackgroundColor] = useState(localStorage.getItem('bgColor') !== null ? localStorage.getItem('bgColor') : '#137e0c'); // Default white color
-    const [fontColor, setFontColor] = useState(localStorage.getItem('fontColor') !== null ? localStorage.getItem('fontColor') : '#f1f1f1'); // Default black color
+    const [backgroundColor, setBackgroundColor] = useState<string>(() => localStorage.getItem('bgColor') ?? '#137e0c');
+    const [fontColor, setFontColor] = useState<string>(() => localStorage.getItem('fontColor') ?? '#f1f1f1');
+
+    console.log(cashInArray, cashOutArray, cashbox);
     const rows = useMemo(
         () =>
             getRows(
@@ -39,24 +45,28 @@ const Planner = ({ }) => {
             ),
         [liquidFunds, inflows, outflows]
     );
-    const handleBackgroundColorChange = (event) => {
+
+    const handleBackgroundColorChange = (event: ChangeEvent<HTMLInputElement>) => {
         const color = event.target.value;
         setBackgroundColor(color);
     };
-    const handleFontColorChange = (event) => {
+
+    const handleFontColorChange = (event: ChangeEvent<HTMLInputElement>) => {
         const color = event.target.value;
         setFontColor(color);
     };
+
     const saveConfiguration = () => {
         localStorage.setItem('bgColor', backgroundColor);
         localStorage.setItem('fontColor', fontColor);
-    }
+    };
+
     const resetConfiguration = () => {
         localStorage.removeItem('bgColor');
         localStorage.removeItem('fontColor');
-        setBackgroundColor('#137e0c')
-        setFontColor('#f1f1f1')
-    }
+        setBackgroundColor('#137e0c');
+        setFontColor('#f1f1f1');
+    };
     return (
         <Stack direction={'row'} spacing={4} marginTop='4rem' marginLeft={open ? '14rem' : '0rem'} display={'flex'} justifyContent={'space-evenly'}>
             <Stack sx={open ? { width: '55%', overflowX: 'auto', marginLeft: '14rem' } : { width: '45%', overflowX: 'auto', marginTop: '4rem' }}>
@@ -69,7 +79,8 @@ const Planner = ({ }) => {
                                 </CustomHeader>
                             ) :
                             (
-                                index !== headerRow.cells.length - 1 && <CustomHeader
+                                index !== headerRow.cells.length - 1 && 
+                                <CustomHeader
                                     BackgroundColor={backgroundColor}
                                     Color={fontColor}
                                     key={index}
@@ -101,7 +112,7 @@ const Planner = ({ }) => {
                                 type="color"
                                 id="backgroundColor"
                                 name="backgroundColor"
-                                value={backgroundColor}
+                                value={backgroundColor !== null ? backgroundColor : ''}
                                 onChange={handleBackgroundColorChange}
                             />
                             <TextField
@@ -119,7 +130,7 @@ const Planner = ({ }) => {
                                 type="color"
                                 id="fontColor"
                                 name="fontColor"
-                                value={fontColor}
+                                value={fontColor !== null ? fontColor : ''}
                                 onChange={handleFontColorChange}
                             />
                             <TextField

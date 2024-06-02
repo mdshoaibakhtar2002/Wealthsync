@@ -18,7 +18,11 @@ import '../Style/Stylesheet.css'
 
 
 const Planner = ({ }) => {
-  const { open } = useContext(AppContext);
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error('AppContext must be used within an AppProvider');
+  }
+  const { open } = context;
   const [liquidFunds, setLiquidFunds] = useState<LiquidFunds[]>(
     getLiquidFunds()
   );
@@ -121,9 +125,9 @@ const Planner = ({ }) => {
 
 
   return (
-    <Stack overflow={'hidden'} sx={open ? { width: '85%', marginLeft: '14rem'} : { width: '100%'}}>
+    <Stack overflow={'hidden'} sx={open ? { width: '85%', marginLeft: '14rem' } : { width: '100%' }}>
       <Graph cashInArray={cashInArray} cashOutArray={cashOutArray} liquidFunds={liquidFunds} />
-      <Stack sx={{overflow:'scroll'}}>
+      <Stack sx={{ overflow: 'scroll' }}>
         <Stack sx={{ width: '100%', marginTop: '2rem' }}>
           <Stack direction={'row'} ml={'12.5rem'}>
             {headerRow.cells.map((cell, index) =>
@@ -133,8 +137,8 @@ const Planner = ({ }) => {
                 </CustomHeader>
               ) : (
                 <CustomHeader
-                  BackgroundColor={backgroundColor}
-                  Color={color}
+                  BackgroundColor={backgroundColor !== null ? backgroundColor : ''}
+                  Color={color !== null ? color :''}
                   key={index}
                   sx={{
                     position: "sticky",

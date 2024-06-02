@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useContext } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -26,25 +26,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { AppContext } from '../../AppContext';
 
 const drawerWidth = 220;
-
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
-  open?: boolean;
-}>(({ theme, open }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
-  transition: theme.transitions.create('margin', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  marginLeft: `-${drawerWidth}px`,
-  ...(open && {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  }),
-}));
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -80,7 +61,12 @@ export default function Sidebar() {
   // const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { open, setOpen } = React.useContext(AppContext);
+
+  const context = useContext(AppContext);
+  if (!context) {
+      throw new Error('AppContext must be used within an AppProvider');
+  }
+  const { open, setOpen} = context;
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -124,6 +110,7 @@ export default function Sidebar() {
             display: 'flex !important',
             justifyContent: 'space-between !important',
             alignContent: 'space-between',
+
             background: '#ececec'
 
           },

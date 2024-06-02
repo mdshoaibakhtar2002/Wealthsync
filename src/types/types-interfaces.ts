@@ -1,5 +1,3 @@
-export type BackgroundColor = "Green" | "Red" | "White" | "Black";
-export type Color = "Black" | "White" | "Blue" | "Grey";
 
 export interface LiquidFunds {
     value: number;
