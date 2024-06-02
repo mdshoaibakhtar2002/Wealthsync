@@ -65,7 +65,7 @@ const Graph: React.FC<GraphProps> = ({ cashInArray, cashOutArray, liquidFunds })
                 borderColor: Utils.CHART_COLORS.red,
                 backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
                 stack: 'Stack 0',
-                type: 'bar',
+                // type: 'bar',
             },
             {
                 label: 'Monthly outflow',
@@ -91,7 +91,7 @@ const Graph: React.FC<GraphProps> = ({ cashInArray, cashOutArray, liquidFunds })
                 'cashOutArray': mockData['cashOutArray'],
             });
         }
-    }, [cashInArray, cashOutArray, liquidFunds]);
+    }, []);
 
     return (
         <Grid container>
