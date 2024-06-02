@@ -1,6 +1,8 @@
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { Grid } from '@mui/material';
+import { useContext, useEffect } from 'react';
+import { AppContext } from '../../AppContext';
 
 // Register the necessary components in ChartJS
 ChartJS.register(
@@ -18,7 +20,8 @@ const DATA_COUNT = 12;
 const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
 
 
-const Graph = ({open, cashInArray, cashOutArray, cashbox, liquidFunds}) => {
+const Graph = ({cashInArray, cashOutArray, liquidFunds}) => {
+    const { setGraphData, open} = useContext(AppContext);
     // Sample Utils object to simulate your Utils functions
     const Utils = {
         months: (config) => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -34,7 +37,7 @@ const Graph = ({open, cashInArray, cashOutArray, cashbox, liquidFunds}) => {
         }
     };
     const funds = () => {
-        return liquidFunds.map(eachFund => eachFund.value);
+        return liquidFunds.map(eachFund => eachFund?.value);
     };
     
     
@@ -68,8 +71,15 @@ const Graph = ({open, cashInArray, cashOutArray, cashbox, liquidFunds}) => {
             }
         ]
     };
+    useEffect(()=>{
+        setGraphData({
+            'cashInArray' : cashInArray,
+            'cashBox' : funds(),
+            'cashOutArray' : cashOutArray
+        })
+    },[])
     return (
-        <Grid container key={+open}>
+        <Grid container>
                 <Bar key={+open} style={{ height: '100%', width:'100%'}} data={data} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Combined Chart' } } }} />
         </Grid>
     );

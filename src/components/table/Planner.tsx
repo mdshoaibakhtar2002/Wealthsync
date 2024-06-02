@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
 import { ReactGrid, CellChange, TextCell } from "@silevis/reactgrid";
 import { getLiquidFunds, getInflows, getOutflows } from "../../constants";
 import {
@@ -15,17 +15,20 @@ import { headerRow } from "../../utils/grid-helper";
 import { SelectChangeEvent, Stack } from "@mui/material";
 import Graph from './Graph';
 import "@silevis/reactgrid/styles.css";
+import { AppContext } from '../../AppContext';
 
 
-const Planner = ({ open }) => {
+const Planner = ({ }) => {
+  const { open } = useContext(AppContext);
   const [liquidFunds, setLiquidFunds] = useState<LiquidFunds[]>(
     getLiquidFunds()
   );
+  const [cashInArray, setCashInArray] = useState<number[]>([]);
+  const [cashOutArray, setCashOutArray] = useState<number[]>([]);
+
   const [inflows, setInflows] = useState<Inflows[]>(getInflows());
   const [outflows, setOutflows] = useState<Outflows[]>(getOutflows());
 
-  const [cashInArray, setCashInArray] = useState<number[]>([]);
-  const [cashOutArray, setCashOutArray] = useState<number[]>([]);
   const [cashbox, setCashbox] = useState<number[]>([]);
 
   const handleFundsChange = (changes: CellChange<TextCell>[]) => {
@@ -131,9 +134,9 @@ const Planner = ({ open }) => {
   };
 
   return (
-    <>
+    <Stack sx={open ? {width:'85%', marginLeft:'14rem'}:{width:'100%'}}>
       {/* <Header /> */}
-      <Graph open={open} cashInArray={cashInArray} cashOutArray={cashOutArray} cashbox={cashbox} liquidFunds={liquidFunds}/>
+      <Graph cashInArray={cashInArray} cashOutArray={cashOutArray} liquidFunds={liquidFunds} />
       <Stack sx={{ width: '100%', overflowX: 'auto' }}>
         {/* Side wala configuration krne wala hai */}
         {/* <MiniDrawer/> */}
@@ -174,18 +177,18 @@ const Planner = ({ open }) => {
         </Stack>
         {/* Table */}
         <Stack>
-        <ReactGrid
-          rows={rows}
-          columns={columns}
-          stickyRightColumns={1}
-          stickyLeftColumns={1}
-          onCellsChanged={(changes) =>
-            handleFundsChange(changes as CellChange<TextCell>[])
-          }
+          <ReactGrid
+            rows={rows}
+            columns={columns}
+            stickyRightColumns={1}
+            stickyLeftColumns={1}
+            onCellsChanged={(changes) =>
+              handleFundsChange(changes as CellChange<TextCell>[])
+            }
           />
-          </Stack>
+        </Stack>
       </Stack>
-    </>
+    </Stack>
   );
 };
 

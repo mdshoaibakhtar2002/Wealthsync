@@ -15,16 +15,15 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Planner from '../table/Planner';
 import { Stack } from '@mui/material';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import KeyboardDoubleArrowLeftRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowLeftRounded';
-import Footer from '../layout/Footer';
 import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
 import ViewQuiltRoundedIcon from '@mui/icons-material/ViewQuiltRounded';
 import OpacityRoundedIcon from '@mui/icons-material/OpacityRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { AppContext } from '../../AppContext';
 
 const drawerWidth = 220;
 
@@ -78,9 +77,10 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function Sidebar() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { open, setOpen } = React.useContext(AppContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -165,10 +165,6 @@ export default function Sidebar() {
           </IconButton>
         </Stack>
       </Drawer>
-      <Main open={open} sx={{ width: '100%', padding: '0px' }}>
-        <Planner open={open} />
-        <Footer />
-      </Main>
     </Box>
   );
 }
