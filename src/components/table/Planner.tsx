@@ -121,20 +121,12 @@ const Planner = ({ }) => {
 
   const columns = useMemo(getColumns, []);
 
-  const [color, setColor] = useState<Color>("White");
-  const [backgroundColor, setBackgroundColor] =
-    useState<BackgroundColor>("Green");
+  const [backgroundColor] = useState(localStorage.getItem('bgColor') !== null ? localStorage.getItem('bgColor') : '#137e0c'); // Default white color
+  const [color] = useState(localStorage.getItem('fontColor') !== null ? localStorage.getItem('fontColor') : '#f1f1f1'); // Default black color
 
-  const handleColorChange = (event: SelectChangeEvent) => {
-    setColor(event.target.value as Color);
-  };
-
-  const handleBackgroundColorChange = (event: SelectChangeEvent) => {
-    setBackgroundColor(event.target.value as BackgroundColor);
-  };
 
   return (
-    <Stack sx={open ? {width:'85%', marginLeft:'14rem'}:{width:'100%'}}>
+    <Stack sx={open ? { width: '85%', marginLeft: '14rem' } : { width: '100%' }}>
       {/* <Header /> */}
       <Graph cashInArray={cashInArray} cashOutArray={cashOutArray} liquidFunds={liquidFunds} />
       <Stack sx={{ width: '100%', overflowX: 'auto' }}>
@@ -176,7 +168,7 @@ const Planner = ({ }) => {
           )}
         </Stack>
         {/* Table */}
-        <Stack>
+        <Stack overflow={'hidden'}>
           <ReactGrid
             rows={rows}
             columns={columns}
