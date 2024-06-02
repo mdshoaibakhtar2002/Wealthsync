@@ -1,0 +1,4 @@
+.reactgrid-content .rg-pane .rg-cell{
+    display: block !important;
+    padding-top: 8px !important;
+  }

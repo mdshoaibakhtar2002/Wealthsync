@@ -14,6 +14,7 @@ import { Stack } from "@mui/material";
 import Graph from './Graph';
 import "@silevis/reactgrid/styles.css";
 import { AppContext } from '../../AppContext';
+import '../Style/Stylesheet.css'
 
 
 const Planner = ({ }) => {
@@ -120,41 +121,43 @@ const Planner = ({ }) => {
 
 
   return (
-    <Stack sx={open ? { width: '85%', marginLeft: '14rem' } : { width: '100%' }}>
+    <Stack overflow={'hidden'} sx={open ? { width: '85%', marginLeft: '14rem'} : { width: '100%'}}>
       <Graph cashInArray={cashInArray} cashOutArray={cashOutArray} liquidFunds={liquidFunds} />
-      <Stack sx={{ width: '100%', overflowX: 'auto' }}>
-        <Stack direction={'row'} ml={'12.5rem'}>
-          {headerRow.cells.map((cell, index) =>
-            (cell as TextCell).text === "" ? (
-              <CustomHeader BackgroundColor="White" Color="White" key={index}>
-                {(cell as TextCell)?.text}
-              </CustomHeader>
-            ) : (
-              <CustomHeader
-                BackgroundColor={backgroundColor}
-                Color={color}
-                key={index}
-                sx={{
-                  position: "sticky",
-                  right: 0,
-                }}
-                Width={index === headerRow.cells.length - 1 ? 200 : 150}
-              >
-                {(cell as TextCell)?.text}
-              </CustomHeader>
-            )
-          )}
-        </Stack>
-        <Stack overflow={'hidden'}>
-          <ReactGrid
-            rows={rows}
-            columns={columns}
-            stickyRightColumns={1}
-            stickyLeftColumns={1}
-            onCellsChanged={(changes) =>
-              handleFundsChange(changes as CellChange<TextCell>[])
-            }
-          />
+      <Stack sx={{overflow:'scroll'}}>
+        <Stack sx={{ width: '100%', marginTop: '2rem' }}>
+          <Stack direction={'row'} ml={'12.5rem'}>
+            {headerRow.cells.map((cell, index) =>
+              (cell as TextCell).text === "" ? (
+                <CustomHeader BackgroundColor="White" Color="White" key={index}>
+                  {(cell as TextCell)?.text}
+                </CustomHeader>
+              ) : (
+                <CustomHeader
+                  BackgroundColor={backgroundColor}
+                  Color={color}
+                  key={index}
+                  sx={{
+                    position: "sticky",
+                    right: 0,
+                  }}
+                  Width={index === headerRow.cells.length - 1 ? 200 : 150}
+                >
+                  {(cell as TextCell)?.text}
+                </CustomHeader>
+              )
+            )}
+          </Stack>
+          <Stack>
+            <ReactGrid
+              rows={rows}
+              columns={columns}
+              stickyRightColumns={1}
+              stickyLeftColumns={1}
+              onCellsChanged={(changes) =>
+                handleFundsChange(changes as CellChange<TextCell>[])
+              }
+            />
+          </Stack>
         </Stack>
       </Stack>
     </Stack>

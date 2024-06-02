@@ -253,7 +253,7 @@ export const getRows = (
             return newArray.map((it: number) => ({
               type: "header",
               text: isNaN(it) ? "0" : it.toString(),
-              className: "cell-box !tracking-tighter !font-semibold !text-sky-600",
+              className: "cell-box !tracking-tighter !font-semibold !text-gray-600",
             }));
           })
           .flat(),
@@ -340,7 +340,7 @@ export const getRows = (
             return newArray.map((item: number) => ({
               type: "header",
               text: isNaN(item) ? "0" : item.toString(),
-              className: "cell-box !tracking-tighter !font-semibold !text-red-600",
+              className: "cell-box !tracking-tighter !font-semibold !text-gray-600",
             }));
           })
           .flat(),
@@ -388,7 +388,7 @@ export const getRows = (
             return newArray.map((item: number) => ({
               type: "header",
               text: isNaN(item) ? "0" : item.toString(),
-              className: "cell-box !tracking-tighter !font-semibold !text-red-600",
+              className: "cell-box !tracking-tighter !font-semibold !text-gray-600",
             }));
           })
           .flat(),
