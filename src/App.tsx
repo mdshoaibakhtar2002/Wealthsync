@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Planner from './components/table/Planner';
 import { AppProvider } from './AppContext'; // Import the context provider
 import Dashboard from './components/Dashboard';
-import Footer from './components/layout/Footer';
+import Configuration from './components/Configuration';
 
 const App = () => {
   return (
@@ -14,9 +14,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Dashboard/>} />
           <Route path="/planner" element={<Planner/>} />
+          <Route path="/configuration" element={<Configuration/>} />
         </Routes>
       </Router>
-      <Footer />
     </AppProvider>
   );
 };

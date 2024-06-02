@@ -3,8 +3,7 @@ import { Bar } from 'react-chartjs-2';
 import { Grid } from '@mui/material';
 import { useContext, useEffect } from 'react';
 import { AppContext } from '../../AppContext';
-
-// Register the necessary components in ChartJS
+import { mockData } from '../../constants/index';
 ChartJS.register(
     BarElement,
     CategoryScale,
@@ -14,11 +13,6 @@ ChartJS.register(
     Tooltip,
     Legend
 );
-
-// Your data and configuration
-const DATA_COUNT = 12;
-const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
-
 
 const Graph = ({cashInArray, cashOutArray, liquidFunds}) => {
     const { setGraphData, open} = useContext(AppContext);
@@ -41,7 +35,6 @@ const Graph = ({cashInArray, cashOutArray, liquidFunds}) => {
     };
     
     
-    
     const labels = Utils.months({ count: 12 });
     const data = {
         labels: labels,
@@ -49,7 +42,7 @@ const Graph = ({cashInArray, cashOutArray, liquidFunds}) => {
 
             {
                 label: 'Cashbox/bank',
-                data: funds(),
+                data: funds()?.[0] !== undefined ? funds() : mockData['cashBox'],
                 borderColor: Utils.CHART_COLORS.ok,
                 backgroundColor: Utils.transparentize(Utils.CHART_COLORS.funds, 0.5),
                 stack: 'Stack 1',
@@ -72,15 +65,23 @@ const Graph = ({cashInArray, cashOutArray, liquidFunds}) => {
         ]
     };
     useEffect(()=>{
-        setGraphData({
-            'cashInArray' : cashInArray,
-            'cashBox' : funds(),
-            'cashOutArray' : cashOutArray
-        })
+        if(cashInArray.length !== 0){
+            setGraphData({
+                'cashInArray' : cashInArray,
+                'cashBox' : funds(),
+                'cashOutArray' : cashOutArray
+            })
+        }else{
+            setGraphData({
+                'cashInArray' : mockData['cashInArray'],
+                'cashBox' : mockData['cashBox'],
+                'cashOutArray' : mockData['cashOutArray'],
+            })
+        }
     },[])
     return (
         <Grid container>
-                <Bar key={+open} style={{ height: '100%', width:'100%'}} data={data} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Combined Chart' } } }} />
+                <Bar key={+open} style={{ height: '100%', width:'100%'}} data={data} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true} } }} />
         </Grid>
     );
 };
