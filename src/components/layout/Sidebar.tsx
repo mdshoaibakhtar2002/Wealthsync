@@ -15,13 +15,16 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import Planner from '../table/Planner';
 import { Stack } from '@mui/material';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import KeyboardDoubleArrowLeftRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowLeftRounded';
 import Footer from '../layout/Footer';
+import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
+import ViewQuiltRoundedIcon from '@mui/icons-material/ViewQuiltRounded';
+import OpacityRoundedIcon from '@mui/icons-material/OpacityRounded';
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const drawerWidth = 220;
 
@@ -76,6 +79,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function Sidebar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -85,10 +90,14 @@ export default function Sidebar() {
     setOpen(false);
   };
 
+  const handleNavigation = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} sx={{ background: '#4231b7' }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -115,6 +124,7 @@ export default function Sidebar() {
             display: 'flex !important',
             justifyContent: 'space-between !important',
             alignContent: 'space-between',
+            background: '#ececec'
 
           },
         }}
@@ -130,13 +140,19 @@ export default function Sidebar() {
           </DrawerHeader>
           <Divider />
           <List>
-            {['Dashboard', 'Planner', 'Profile', 'Setting'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
+            {[
+              { text: 'Dashboard', icon: <ViewQuiltRoundedIcon />, path: '/' },
+              { text: 'Planner', icon: <AssessmentRoundedIcon />, path: '/planner' },
+              { text: 'Configuration', icon: <OpacityRoundedIcon />, path: '/configuration' },
+              { text: 'Settings', icon: <SettingsRoundedIcon />, path: '/settings' },
+            ].map((item) => (
+              <ListItem key={item.text} disablePadding>
+                <ListItemButton
+                  onClick={() => handleNavigation(item.path)}
+                  selected={location.pathname === item.path}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
                 </ListItemButton>
               </ListItem>
             ))}
@@ -149,13 +165,10 @@ export default function Sidebar() {
           </IconButton>
         </Stack>
       </Drawer>
-      <Main open={open} sx={{ width: '100%' }}>
-        <Box component="main" key={+open} sx={{ width: '100%' }}>
-          <Planner open={open} />
-          <Footer />
-        </Box>
+      <Main open={open} sx={{ width: '100%', padding: '0px' }}>
+        <Planner open={open} />
+        <Footer />
       </Main>
     </Box>
   );
 }
-

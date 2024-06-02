@@ -1,4 +1,3 @@
-import MiniDrawer from '../layout/Sidebar';
 import { useState, useMemo } from "react";
 import { ReactGrid, CellChange, TextCell } from "@silevis/reactgrid";
 import { getLiquidFunds, getInflows, getOutflows } from "../../constants";
@@ -99,6 +98,9 @@ const Planner = ({ open }) => {
         setLiquidFunds(newLiquidFunds);
       }
     });
+    console.log('Updated inflows funds', inflows)
+    console.log('Updated outflows funds', outflows)
+    console.log('Updated liquidFunds funds', liquidFunds)
   };
 
   const rows = useMemo(
@@ -131,7 +133,7 @@ const Planner = ({ open }) => {
   return (
     <>
       {/* <Header /> */}
-      <Graph open={open} />
+      <Graph open={open} cashInArray={cashInArray} cashOutArray={cashOutArray} cashbox={cashbox} liquidFunds={liquidFunds}/>
       <Stack sx={{ width: '100%', overflowX: 'auto' }}>
         {/* Side wala configuration krne wala hai */}
         {/* <MiniDrawer/> */}
