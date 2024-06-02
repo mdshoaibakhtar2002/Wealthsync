@@ -5,14 +5,12 @@ import {
   LiquidFunds,
   Inflows,
   Outflows,
-  CashFlowValue,
-  Color,
-  BackgroundColor,
+  CashFlowValue
 } from "../../types/types-interfaces";
 import { getRows, getColumns } from "../../utils/grid-helper";
 import CustomHeader from "../../components/custom-header";
 import { headerRow } from "../../utils/grid-helper";
-import { SelectChangeEvent, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import Graph from './Graph';
 import "@silevis/reactgrid/styles.css";
 import { AppContext } from '../../AppContext';
@@ -25,12 +23,12 @@ const Planner = ({ }) => {
   );
   const [cashInArray, setCashInArray] = useState<number[]>([]);
   const [cashOutArray, setCashOutArray] = useState<number[]>([]);
-
   const [inflows, setInflows] = useState<Inflows[]>(getInflows());
   const [outflows, setOutflows] = useState<Outflows[]>(getOutflows());
-
   const [cashbox, setCashbox] = useState<number[]>([]);
-
+  const columns = useMemo(getColumns, []);
+  const [backgroundColor] = useState(localStorage.getItem('bgColor') !== null ? localStorage.getItem('bgColor') : '#137e0c');
+  const [color] = useState(localStorage.getItem('fontColor') !== null ? localStorage.getItem('fontColor') : '#f1f1f1');
   const handleFundsChange = (changes: CellChange<TextCell>[]) => {
     changes.forEach((change) => {
       const fundIndex = change.rowId as string;
@@ -101,9 +99,10 @@ const Planner = ({ }) => {
         setLiquidFunds(newLiquidFunds);
       }
     });
-    console.log('Updated inflows funds', inflows)
-    console.log('Updated outflows funds', outflows)
-    console.log('Updated liquidFunds funds', liquidFunds)
+    console.log('Updated inflows', inflows)
+    console.log('Updated outflows', outflows)
+    console.log('Updated liquidFunds', liquidFunds)
+    console.log('Updated cashbox', cashbox)
   };
 
   const rows = useMemo(
@@ -119,32 +118,11 @@ const Planner = ({ }) => {
     [liquidFunds, inflows, outflows]
   );
 
-  const columns = useMemo(getColumns, []);
-
-  const [backgroundColor] = useState(localStorage.getItem('bgColor') !== null ? localStorage.getItem('bgColor') : '#137e0c'); // Default white color
-  const [color] = useState(localStorage.getItem('fontColor') !== null ? localStorage.getItem('fontColor') : '#f1f1f1'); // Default black color
-
 
   return (
     <Stack sx={open ? { width: '85%', marginLeft: '14rem' } : { width: '100%' }}>
-      {/* <Header /> */}
       <Graph cashInArray={cashInArray} cashOutArray={cashOutArray} liquidFunds={liquidFunds} />
       <Stack sx={{ width: '100%', overflowX: 'auto' }}>
-        {/* Side wala configuration krne wala hai */}
-        {/* <MiniDrawer/> */}
-        {/* <CustomSelectHeader
-          color={color}
-          backgroundColor={backgroundColor}
-          handleColor={handleColorChange}
-          handleBackgroundColor={handleBackgroundColorChange}
-        /> */}
-        {/* Chart hai ye */}
-        {/* <FinancialChart
-          cashInArray={cashInArray}
-          cashOutArray={cashOutArray}
-          cashbox={cashbox}
-        /> */}
-        {/* Header hia mongth ka */}
         <Stack direction={'row'} ml={'12.5rem'}>
           {headerRow.cells.map((cell, index) =>
             (cell as TextCell).text === "" ? (
@@ -167,7 +145,6 @@ const Planner = ({ }) => {
             )
           )}
         </Stack>
-        {/* Table */}
         <Stack overflow={'hidden'}>
           <ReactGrid
             rows={rows}

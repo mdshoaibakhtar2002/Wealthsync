@@ -19,14 +19,14 @@ const Planner = ({ }) => {
     const [liquidFunds, setLiquidFunds] = useState<LiquidFunds[]>(
         getLiquidFunds()
     );
+    const columns = useMemo(getColumns, []);
     const [cashInArray, setCashInArray] = useState<number[]>([]);
     const [cashOutArray, setCashOutArray] = useState<number[]>([]);
-
     const [inflows, setInflows] = useState<Inflows[]>(getInflows());
     const [outflows, setOutflows] = useState<Outflows[]>(getOutflows());
-
     const [cashbox, setCashbox] = useState<number[]>([]);
-
+    const [backgroundColor, setBackgroundColor] = useState(localStorage.getItem('bgColor') !== null ? localStorage.getItem('bgColor') : '#137e0c'); // Default white color
+    const [fontColor, setFontColor] = useState(localStorage.getItem('fontColor') !== null ? localStorage.getItem('fontColor') : '#f1f1f1'); // Default black color
     const rows = useMemo(
         () =>
             getRows(
@@ -39,30 +39,18 @@ const Planner = ({ }) => {
             ),
         [liquidFunds, inflows, outflows]
     );
-
-    const columns = useMemo(getColumns, []);
-
-
-    const [backgroundColor, setBackgroundColor] = useState(localStorage.getItem('bgColor') !== null ? localStorage.getItem('bgColor') : '#137e0c'); // Default white color
-    const [fontColor, setFontColor] = useState(localStorage.getItem('fontColor') !== null ? localStorage.getItem('fontColor') : '#f1f1f1'); // Default black color
-
     const handleBackgroundColorChange = (event) => {
         const color = event.target.value;
         setBackgroundColor(color);
-        // localStorage.setItem('bgColor', color)
     };
-
     const handleFontColorChange = (event) => {
         const color = event.target.value;
         setFontColor(color);
-        // localStorage.setItem('fontColor', color)
     };
-
     const saveConfiguration = () => {
         localStorage.setItem('bgColor', backgroundColor);
         localStorage.setItem('fontColor', fontColor);
     }
-
     const resetConfiguration = () => {
         localStorage.removeItem('bgColor');
         localStorage.removeItem('fontColor');
@@ -107,7 +95,7 @@ const Planner = ({ }) => {
                 <Typography color={'#6a6a6a'} fontSize={'18px'} fontWeight={'600'}>Header Configuration</Typography>
                 <Stack spacing={4}>
                     <Stack direction={'row'} spacing={3} display={'flex'} justifyContent={'space-between'}>
-                        <Typography>Background Color:</Typography>
+                        <Typography color={'#6a6a6a'}>Background Color:</Typography>
                         <Stack direction={'row'} spacing={2}>
                             <input
                                 type="color"
@@ -125,7 +113,7 @@ const Planner = ({ }) => {
                         </Stack>
                     </Stack>
                     <Stack direction={'row'} spacing={3} display={'flex'} justifyContent={'space-between'}>
-                        <Typography>Font Color:</Typography>
+                        <Typography color={'#6a6a6a'}>Font Color:</Typography>
                         <Stack direction={'row'} spacing={2}>
                             <input
                                 type="color"
